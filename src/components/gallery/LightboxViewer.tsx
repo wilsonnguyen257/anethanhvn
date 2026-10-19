@@ -38,65 +38,29 @@ export default function LightboxViewer({
     }
   }, [isOpen, initialIndex]);
 
-  // Handle keyboard navigation
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      switch (e.key) {
-        case 'ArrowLeft':
-          navigatePrevious();
-          break;
-        case 'ArrowRight':
-          navigateNext();
-          break;
-        case 'Escape':
-          onClose();
-          break;
-        case 'f':
-          toggleFullscreen();
-          break;
-        case '+':
-        case '=':
-          handleZoom(0.1);
-          break;
-        case '-':
-        case '_':
-          handleZoom(-0.1);
-          break;
-        case '0':
-          resetZoom();
-          break;
-      }
-    };
-
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, currentIndex]);
-
   // Navigation functions
+  const resetZoom = useCallback(() => {
+    setScale(1);
+    setPosition({ x: 0, y: 0 });
+  }, []);
+
   const navigatePrevious = useCallback(() => {
     if (currentIndex > 0) {
       setCurrentIndex(currentIndex - 1);
       resetZoom();
     }
-  }, [currentIndex]);
+  }, [currentIndex, resetZoom]);
 
   const navigateNext = useCallback(() => {
     if (currentIndex < images.length - 1) {
       setCurrentIndex(currentIndex + 1);
       resetZoom();
     }
-  }, [currentIndex]);
+  }, [currentIndex, images.length, resetZoom]);
 
   // Zoom functions
   const handleZoom = useCallback((delta: number) => {
     setScale(prevScale => Math.min(Math.max(0.5, prevScale + delta), 3));
-  }, []);
-
-  const resetZoom = useCallback(() => {
-    setScale(1);
-    setPosition({ x: 0, y: 0 });
   }, []);
 
   // Drag handlers
@@ -153,6 +117,42 @@ export default function LightboxViewer({
       setIsFullscreen(false);
     }
   }, []);
+
+  // Handle keyboard navigation
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      switch (e.key) {
+        case 'ArrowLeft':
+          navigatePrevious();
+          break;
+        case 'ArrowRight':
+          navigateNext();
+          break;
+        case 'Escape':
+          onClose();
+          break;
+        case 'f':
+          toggleFullscreen();
+          break;
+        case '+':
+        case '=':
+          handleZoom(0.1);
+          break;
+        case '-':
+        case '_':
+          handleZoom(-0.1);
+          break;
+        case '0':
+          resetZoom();
+          break;
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, navigatePrevious, navigateNext, onClose, toggleFullscreen, handleZoom, resetZoom]);
 
   // Download image
   const handleDownload = useCallback(() => {

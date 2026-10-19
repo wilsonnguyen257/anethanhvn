@@ -22,15 +22,12 @@ const LazyLoadSection = ({ children, placeholderHeight = '500px' }: LazyLoadSect
       }
     );
 
-    if (placeholderRef.current) {
-      observer.observe(placeholderRef.current);
+    const el = placeholderRef.current;
+    if (el) {
+      observer.observe(el);
     }
 
-    return () => {
-      if (placeholderRef.current) {
-        observer.unobserve(placeholderRef.current);
-      }
-    };
+    return () => observer.disconnect();
   }, []);
 
   return (

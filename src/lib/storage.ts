@@ -165,7 +165,7 @@ export async function saveJson(name: JsonName, data: unknown): Promise<void> {
  * @param name - Name of the data collection
  * @param item - Item to save (must have an id)
  */
-export async function saveItem(name: JsonName, item: { id: string; [key: string]: any }): Promise<void> {
+export async function saveItem<T extends { id: string }>(name: JsonName, item: T): Promise<void> {
   if (IS_FIREBASE_CONFIGURED && db) {
     try {
       const colRef = collection(db, 'site-data', name, 'items');
@@ -185,8 +185,8 @@ export async function saveItem(name: JsonName, item: { id: string; [key: string]
   }
   
   // Fallback to full save
-  const items = await getJson<any[]>(name);
-  const index = items.findIndex((i: any) => i.id === item.id);
+  const items = await getJson<T[]>(name);
+  const index = items.findIndex((i) => i.id === item.id);
   if (index >= 0) {
     items[index] = item;
   } else {
@@ -222,8 +222,8 @@ export async function deleteItem(name: JsonName, id: string): Promise<void> {
   }
   
   // Fallback to full save
-  const items = await getJson<any[]>(name);
-  const filtered = items.filter((i: any) => i.id !== id);
+  const items = await getJson<Array<{ id: string }>>(name);
+  const filtered = items.filter((i) => i.id !== id);
   await saveJson(name, filtered);
 }
 

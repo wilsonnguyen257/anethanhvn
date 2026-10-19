@@ -72,7 +72,7 @@ export default function EventRegistrationForm({
         numberOfPeople: 1,
         message: '',
       });
-    } catch (error) {
+    } catch {
       // Error is handled by parent
     }
   };
@@ -110,7 +110,7 @@ export default function EventRegistrationForm({
       {/* Event Info */}
       <div className="bg-slate-50 rounded-lg p-4">
         <h3 className="font-semibold text-slate-900 mb-2">
-          {typeof eventName === 'string' ? eventName : (eventName[language] || (eventName as any).vi || '')}
+          {eventName}
         </h3>
         <div className="text-sm text-slate-600 space-y-1">
           <p>

@@ -10,6 +10,15 @@ interface ImageMetadataEditorProps {
   loading?: boolean;
 }
 
+// Common tags for suggestions
+const COMMON_TAGS = [
+  'church', 'mass', 'event', 'ceremony', 'choir', 'community',
+  'vietnamese', 'culture', 'tradition', 'celebration', 'holiday',
+  'youth', 'children', 'family', 'portrait', 'group',
+  'interior', 'exterior', 'architecture', 'stained glass',
+  'easter', 'christmas', 'lent', 'advent',
+];
+
 export default function ImageMetadataEditor({
   image,
   onSave,
@@ -28,20 +37,11 @@ export default function ImageMetadataEditor({
 
   const t = (en: string, vi: string) => language === 'vi' ? vi : en;
 
-  // Common tags for suggestions
-  const commonTags = [
-    'church', 'mass', 'event', 'ceremony', 'choir', 'community',
-    'vietnamese', 'culture', 'tradition', 'celebration', 'holiday',
-    'youth', 'children', 'family', 'portrait', 'group',
-    'interior', 'exterior', 'architecture', 'stained glass',
-    'easter', 'christmas', 'lent', 'advent',
-  ];
-
   useEffect(() => {
     // Filter suggestions based on input
     const input = tagInput.toLowerCase();
     if (input.length > 0) {
-      const filtered = commonTags.filter(tag => 
+      const filtered = COMMON_TAGS.filter(tag => 
         tag.toLowerCase().includes(input) && !formData.tags.includes(tag)
       );
       setSuggestedTags(filtered.slice(0, 5));
@@ -204,7 +204,7 @@ export default function ImageMetadataEditor({
             {t('Common tags:', 'Thẻ phổ biến:')}
           </p>
           <div className="flex flex-wrap gap-2">
-            {commonTags.slice(0, 10).map(tag => (
+            {COMMON_TAGS.slice(0, 10).map(tag => (
               <button
                 key={tag}
                 onClick={() => addTag(tag)}

@@ -42,7 +42,7 @@ export function useGallery() {
   // Save images
   const saveImages = useCallback(async (newImages: ImageMetadata[]) => {
     try {
-      await saveJson('gallery-images', newImages as any);
+      await saveJson('gallery-images', newImages);
       setImages(newImages);
     } catch (error) {
       console.error('Failed to save images:', error);
@@ -53,7 +53,7 @@ export function useGallery() {
   // Save albums
   const saveAlbums = useCallback(async (newAlbums: Album[]) => {
     try {
-      await saveJson('gallery-albums', newAlbums as any);
+      await saveJson('gallery-albums', newAlbums);
       setAlbums(newAlbums);
     } catch (error) {
       console.error('Failed to save albums:', error);

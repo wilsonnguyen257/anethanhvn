@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+import React, { createContext, useContext, useEffect, useRef, useState, type ReactNode } from 'react';
 
 interface OfflineContextType {
   isOnline: boolean;
@@ -6,10 +6,10 @@ interface OfflineContextType {
   offlineQueue: Array<{
     id: string;
     type: string;
-    data: any;
+    data: unknown;
     timestamp: number;
   }>;
-  addToOfflineQueue: (type: string, data: any) => void;
+  addToOfflineQueue: (type: string, data: unknown) => void;
   clearOfflineQueue: () => void;
   syncOfflineQueue: () => Promise<void>;
   lastSyncTime: number | null;
@@ -36,7 +36,7 @@ export function OfflineProvider({ children }: OfflineProviderProps) {
   const [offlineQueue, setOfflineQueue] = useState<Array<{
     id: string;
     type: string;
-    data: any;
+    data: unknown;
     timestamp: number;
   }>>([]);
   const [lastSyncTime, setLastSyncTime] = useState<number | null>(null);
@@ -71,12 +71,16 @@ export function OfflineProvider({ children }: OfflineProviderProps) {
     }
   }, [offlineQueue]);
 
+  // The online listener is registered once, so it reads the latest sync
+  // function (and therefore the latest queue) through a ref.
+  const syncRef = useRef<() => Promise<void>>(async () => {});
+
   // Listen for online/offline events
   useEffect(() => {
     const handleOnline = () => {
       setIsOnline(true);
       // Attempt to sync when coming back online
-      syncOfflineQueue();
+      syncRef.current();
     };
 
     const handleOffline = () => {
@@ -95,7 +99,7 @@ export function OfflineProvider({ children }: OfflineProviderProps) {
   }, []);
 
   // Add item to offline queue
-  const addToOfflineQueue = (type: string, data: any) => {
+  const addToOfflineQueue = (type: string, data: unknown) => {
     const item = {
       id: Date.now().toString() + Math.random().toString(36).substr(2),
       type,
@@ -159,12 +163,14 @@ export function OfflineProvider({ children }: OfflineProviderProps) {
             });
             break;
             
-          case 'deleteItem':
+          case 'deleteItem': {
             // Sync deletion
-            await fetch(`/api/${item.data.type}/${item.data.id}`, {
+            const { type, id } = item.data as { type: string; id: string };
+            await fetch(`/api/${type}/${id}`, {
               method: 'DELETE',
             });
             break;
+          }
             
           default:
             console.warn('Unknown offline queue item type:', item.type);
@@ -190,6 +196,7 @@ export function OfflineProvider({ children }: OfflineProviderProps) {
       console.error('Failed to sync offline queue:', error);
     }
   };
+  syncRef.current = syncOfflineQueue;
 
   const value: OfflineContextType = {
     isOnline,

@@ -32,23 +32,6 @@ export default function BatchImageUpload({
     }
   }, []);
 
-  // Handle drop
-  const handleDrop = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(false);
-    
-    const droppedFiles = Array.from(e.dataTransfer.files);
-    handleFiles(droppedFiles);
-  }, []);
-
-  // Handle file selection
-  const handleFileSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      handleFiles(Array.from(e.target.files));
-    }
-  }, []);
-
   // Process files
   const handleFiles = useCallback((newFiles: File[]) => {
     // Filter valid image files
@@ -64,12 +47,29 @@ export default function BatchImageUpload({
     // Check max files limit
     const totalFiles = files.length + validFiles.length;
     if (totalFiles > maxFiles) {
-      alert(t(`Maximum ${maxFiles} files allowed`, `Tối đa ${maxFiles} tệp được phép`));
+      alert(language === 'vi' ? `Tối đa ${maxFiles} tệp được phép` : `Maximum ${maxFiles} files allowed`);
       return;
     }
 
     setFiles(prev => [...prev, ...validFiles]);
   }, [files.length, maxFiles, language]);
+
+  // Handle drop
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+    
+    const droppedFiles = Array.from(e.dataTransfer.files);
+    handleFiles(droppedFiles);
+  }, [handleFiles]);
+
+  // Handle file selection
+  const handleFileSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      handleFiles(Array.from(e.target.files));
+    }
+  }, [handleFiles]);
 
   // Remove file
   const removeFile = useCallback((index: number) => {

@@ -28,7 +28,7 @@ export interface EnhancedEvent {
   registrationDeadline?: string;
   recurrence?: RecurrenceRule;
   isRecurring: boolean;
-  reminders: any[];
+  reminders: unknown[];
   tags?: string[];
   category?: string;
   timezone: string;
@@ -63,7 +63,7 @@ export interface EventFormData {
   registrationDeadline: string;
   recurrence?: RecurrenceRule;
   isRecurring: boolean;
-  reminders: any[];
+  reminders: unknown[];
   tags: string[];
   category: string;
   onlineEventUrl: string;

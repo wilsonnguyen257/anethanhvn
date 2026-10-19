@@ -80,5 +80,5 @@ export interface GalleryViewOptions {
   showTags: boolean;
   sortBy: 'date' | 'name' | 'size';
   sortOrder: 'asc' | 'desc';
-  filterBy?: Record<string, any>;
+  filterBy?: Record<string, unknown>;
 }
