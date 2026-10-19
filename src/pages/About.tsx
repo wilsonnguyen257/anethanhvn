@@ -26,38 +26,36 @@ export default function About() {
       <section className="py-20">
         <div className="container-xl">
           <h2 className="h2 text-center mb-12">{t('about.history_title')}</h2>
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-3xl mx-auto">
             <div className="relative">
               {/* Timeline line */}
-              <div className="absolute left-8 top-0 bottom-0 w-px bg-slate-200"></div>
+              <div className="absolute left-[7px] top-2 bottom-2 w-px bg-slate-200" aria-hidden="true"></div>
 
-              <div className="space-y-8">
-                <div className="relative pl-20">
-                  <div className="absolute left-4 top-2 w-8 h-8 bg-brand-600 rounded-full border-4 border-surface flex items-center justify-center">
-                    <svg className="w-4 h-4 text-surface" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
-                      <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd"/>
-                    </svg>
-                  </div>
-                  <div className="card">
-                    <h3 className="text-lg font-semibold text-slate-900 mb-3">{t('about.history_milestone_1')}</h3>
-                    <p className="text-slate-600 leading-relaxed">{t('about.history_p1')}</p>
-                  </div>
-                </div>
-
-                <div className="relative pl-20">
-                  <div className="absolute left-4 top-2 w-8 h-8 bg-brand-600 rounded-full border-4 border-surface flex items-center justify-center">
-                    <svg className="w-4 h-4 text-surface" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/>
-                    </svg>
-                  </div>
-                  <div className="card">
-                    <h3 className="text-lg font-semibold text-slate-900 mb-3">{t('about.history_milestone_2')}</h3>
-                    <p className="text-slate-600 leading-relaxed">{t('about.history_p2')}</p>
-                  </div>
-                </div>
-              </div>
+              <ol>
+              {[1, 2, 3, 4, 5, 6].map((num) => (
+                <li key={num} className="relative pl-10 pb-10 last:pb-0">
+                  <span className="absolute left-0 top-1.5 w-[15px] h-[15px] rounded-full bg-brand-600 ring-4 ring-surface" aria-hidden="true"></span>
+                  <p className="text-sm font-semibold tracking-wide text-brand-600">{t(`about.history_${num}_date`)}</p>
+                  <h3 className="mt-1 text-lg font-semibold text-slate-900">{t(`about.history_${num}_title`)}</h3>
+                  <p className="mt-2 text-slate-600 leading-relaxed">{t(`about.history_${num}_body`)}</p>
+                </li>
+              ))}
+              </ol>
             </div>
+
+            <blockquote className="mt-14 border-l-2 border-brand-600 pl-6">
+              <p className="font-serif text-lg md:text-xl text-slate-800 leading-relaxed">{t('about.history_closing')}</p>
+              <footer className="mt-4 text-sm text-slate-500">
+                {t('about.history_source')}{' '}
+                <a
+                  href="/documents/So-Luoc-Lich-Su-CD-Ane-Thanh-Oct-2026.docx"
+                  download
+                  className="text-brand-600 underline underline-offset-2 hover:text-brand-700"
+                >
+                  {t('about.history_download')}
+                </a>
+              </footer>
+            </blockquote>
           </div>
         </div>
       </section>
