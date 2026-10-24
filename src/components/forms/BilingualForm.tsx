@@ -123,7 +123,7 @@ export default function BilingualForm({
       <div className="space-y-2">
         <div className="flex items-center justify-between">
           <label id={`${fieldId}-label`} htmlFor={fieldId} className="text-sm font-medium text-slate-700">
-            {title}: {activeTab === 'vi' ? 'Nội dung tiếng Việt' : 'English Content'}
+            {title} ({activeTab === 'vi' ? 'Tiếng Việt' : 'English'})
           </label>
           <button
             type="button"
