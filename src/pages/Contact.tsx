@@ -84,7 +84,7 @@ export default function Contact() {
             <div className="card">
               <p className="eyebrow mb-4">{t('contact.send_message')}</p>
               {sent ? (
-                <div className="flex flex-col items-center text-center gap-3 py-8">
+                <div role="status" className="flex flex-col items-center text-center gap-3 py-8">
                   <span className="w-12 h-12 rounded-full bg-green-100 text-green-700 flex items-center justify-center text-2xl">✓</span>
                   <p className="font-semibold text-slate-900">{t('contact.success_message')}</p>
                   <button onClick={() => setSent(false)} className="text-sm text-brand-600 font-semibold hover:underline">
@@ -94,9 +94,11 @@ export default function Contact() {
               ) : (
                 <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                   <div>
-                    <label className="block text-sm font-semibold text-slate-700 mb-1.5">{t('contact.name')}</label>
+                    <label htmlFor="contact-name" className="block text-sm font-semibold text-slate-700 mb-1.5">{t('contact.name')}</label>
                     <input
+                      id="contact-name"
                       type="text"
+                      autoComplete="name"
                       required
                       maxLength={199}
                       value={name}
@@ -105,9 +107,11 @@ export default function Contact() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-semibold text-slate-700 mb-1.5">{t('contact.email')}</label>
+                    <label htmlFor="contact-email" className="block text-sm font-semibold text-slate-700 mb-1.5">{t('contact.email')}</label>
                     <input
+                      id="contact-email"
                       type="email"
+                      autoComplete="email"
                       required
                       maxLength={319}
                       value={email}
@@ -116,8 +120,9 @@ export default function Contact() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-semibold text-slate-700 mb-1.5">{t('contact.subject')}</label>
+                    <label htmlFor="contact-topic" className="block text-sm font-semibold text-slate-700 mb-1.5">{t('contact.subject')}</label>
                     <select
+                      id="contact-topic"
                       value={topic}
                       onChange={(e) => setTopic(e.target.value)}
                       className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-surface text-slate-900 focus:ring-2 focus:ring-brand-600 focus:border-transparent cursor-pointer"
@@ -128,8 +133,9 @@ export default function Contact() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-semibold text-slate-700 mb-1.5">{t('contact.message')}</label>
+                    <label htmlFor="contact-message" className="block text-sm font-semibold text-slate-700 mb-1.5">{t('contact.message')}</label>
                     <textarea
+                      id="contact-message"
                       required
                       rows={5}
                       maxLength={4999}
@@ -138,7 +144,7 @@ export default function Contact() {
                       className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-surface text-slate-900 focus:ring-2 focus:ring-brand-600 focus:border-transparent resize-none"
                     />
                   </div>
-                  {error && <p className="text-sm text-red-600">{error}</p>}
+                  {error && <p role="alert" className="text-sm text-red-700">{error}</p>}
                   <button type="submit" disabled={submitting} className="btn btn-primary w-full justify-center">
                     {submitting ? t('contact.sending') : t('contact.send_button')}
                   </button>

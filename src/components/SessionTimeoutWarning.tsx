@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useDialog } from '../hooks/useDialog';
 import { extendSession, getTimeRemaining } from '../lib/sessionTimeout';
 
 interface SessionTimeoutWarningProps {
@@ -10,6 +11,8 @@ export default function SessionTimeoutWarning({ onDismiss }: SessionTimeoutWarni
   const { language } = useLanguage();
   const [timeLeft, setTimeLeft] = useState(getTimeRemaining);
   // Parents pass an inline arrow; a ref keeps the 1s interval from restarting every render
+  const dialogRef = useRef<HTMLDivElement>(null);
+  useDialog(dialogRef, true, onDismiss);
   const onDismissRef = useRef(onDismiss);
   useEffect(() => {
     onDismissRef.current = onDismiss;
@@ -42,7 +45,13 @@ export default function SessionTimeoutWarning({ onDismiss }: SessionTimeoutWarni
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50">
-      <div className="bg-surface rounded-2xl shadow-[0_2px_6px_rgba(2,2,2,0.14),0_12px_32px_rgba(2,2,2,0.10)] p-6 max-w-md w-full mx-4">
+      <div
+        ref={dialogRef}
+        role="alertdialog"
+        aria-modal="true"
+        aria-labelledby="session-warning-title"
+        tabIndex={-1}
+        className="bg-surface rounded-2xl shadow-[0_2px_6px_rgba(2,2,2,0.14),0_12px_32px_rgba(2,2,2,0.10)] p-6 max-w-md w-full mx-4">
         <div className="flex items-start gap-4">
           <div className="flex-shrink-0 w-12 h-12 rounded-full bg-surface border border-slate-200 flex items-center justify-center text-brand-600">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -50,7 +59,7 @@ export default function SessionTimeoutWarning({ onDismiss }: SessionTimeoutWarni
             </svg>
           </div>
           <div className="flex-1">
-            <h3 className="text-lg font-semibold text-slate-900 mb-2">
+            <h3 id="session-warning-title" className="text-lg font-semibold text-slate-900 mb-2">
               {language === 'vi' ? 'Phiên làm việc sắp hết hạn' : 'Session Expiring Soon'}
             </h3>
             <p className="text-slate-600 mb-4">

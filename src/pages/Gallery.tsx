@@ -1,5 +1,6 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import SEO from '../components/SEO';
+import { useDialog } from '../hooks/useDialog';
 import { useLanguage } from '../contexts/LanguageContext';
 import { subscribeJson } from '../lib/storage';
 import { GallerySkeleton } from '../components/Skeleton';
@@ -34,6 +35,8 @@ export default function Gallery() {
   const [loading, setLoading] = useState(true);
   const [categoryFilter, setCategoryFilter] = useState<GalleryCategory | 'all'>('all');
   const [lightboxImg, setLightboxImg] = useState<GalleryItem | null>(null);
+  const lightboxRef = useRef<HTMLDivElement>(null);
+  useDialog(lightboxRef, lightboxImg !== null, () => setLightboxImg(null));
 
   const filters: { value: GalleryCategory | 'all'; label: string }[] = [
     { value: 'all', label: t('gallery.filter_all') },
@@ -145,8 +148,18 @@ export default function Gallery() {
                     {group.items.map((img) => (
                       <div
                         key={img.id}
-                        className="group card !p-0 overflow-hidden cursor-pointer"
+                        role="button"
+                        tabIndex={0}
+                        aria-haspopup="dialog"
+                        aria-label={img.name}
+                        className="group card !p-0 overflow-hidden cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
                         onClick={() => setLightboxImg(img)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            setLightboxImg(img);
+                          }
+                        }}
                       >
                         <div className="h-[200px] bg-slate-200 overflow-hidden relative">
                           <img
@@ -186,6 +199,11 @@ export default function Gallery() {
           className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 px-6 py-12"
         >
           <div
+            ref={lightboxRef}
+            role="dialog"
+            aria-modal="true"
+            aria-label={lightboxImg.name}
+            tabIndex={-1}
             onClick={(e) => e.stopPropagation()}
             className="w-full max-w-[900px] bg-slate-100 rounded-2xl p-6 flex flex-col gap-4 shadow-[0_2px_6px_rgba(2,2,2,0.14),0_12px_32px_rgba(2,2,2,0.10)]"
           >

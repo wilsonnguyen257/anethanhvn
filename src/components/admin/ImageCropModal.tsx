@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useState, useCallback } from 'react';
+import { useEffect, useMemo, useState, useCallback, useRef } from 'react';
+import { useDialog } from '../../hooks/useDialog';
 import Cropper from 'react-easy-crop';
 import type { Area, Point } from 'react-easy-crop';
 import { useLanguage } from '../../contexts/LanguageContext';
@@ -75,13 +76,8 @@ export default function ImageCropModal({ file, aspect, onCropComplete, onCancel,
     return () => URL.revokeObjectURL(imageSrc);
   }, [imageSrc]);
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onCancel();
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [onCancel]);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  useDialog(dialogRef, true, onCancel);
 
   const handleCropComplete = useCallback((_croppedArea: Area, pixels: Area) => {
     setCroppedAreaPixels(pixels);
@@ -106,6 +102,11 @@ export default function ImageCropModal({ file, aspect, onCropComplete, onCancel,
       className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 px-6 py-12"
     >
       <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label={title || t('admin.crop.title')}
+        tabIndex={-1}
         onClick={(e) => e.stopPropagation()}
         className="w-full max-w-[560px] bg-slate-100 rounded-2xl p-6 flex flex-col gap-4 shadow-[0_2px_6px_rgba(2,2,2,0.14),0_12px_32px_rgba(2,2,2,0.10)]"
       >
