@@ -7,22 +7,31 @@ service firebase.storage {
       ];
     }
 
+    // Uploads must be reasonably sized images (client checks are bypassable)
+    function isValidImage() {
+      return request.resource.size < 10 * 1024 * 1024
+        && request.resource.contentType.matches('image/.*');
+    }
+
     // Publicly readable gallery files
     match /gallery/{allPaths=**} {
       allow read: if true; // anyone can view
-      allow write: if isAdmin(); // only admins can upload/delete
+      allow create, update: if isAdmin() && isValidImage();
+      allow delete: if isAdmin();
     }
 
     // Publicly readable event thumbnails
     match /events/{allPaths=**} {
       allow read: if true; // anyone can view event thumbnails
-      allow write: if isAdmin(); // only admins can upload/delete
+      allow create, update: if isAdmin() && isValidImage();
+      allow delete: if isAdmin();
     }
 
     // Publicly readable reflection thumbnails
     match /reflections/{allPaths=**} {
       allow read: if true; // anyone can view reflection thumbnails
-      allow write: if isAdmin(); // only admins can upload/delete
+      allow create, update: if isAdmin() && isValidImage();
+      allow delete: if isAdmin();
     }
 
     // Default: deny other paths unless you configure them

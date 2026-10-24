@@ -34,6 +34,11 @@ service cloud.firestore {
     match /messages/{messageId} {
       allow read, update, delete: if isAdmin();
       allow create: if request.resource.data.keys().hasAll(['name', 'email', 'message', 'status', 'createdAt'])
+        && request.resource.data.keys().hasOnly(['name', 'email', 'message', 'context', 'status', 'createdAt'])
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.email.matches('.+@.+')
+        && (!('context' in request.resource.data) || request.resource.data.context == null
+            || (request.resource.data.context is string && request.resource.data.context.size() < 500))
         && request.resource.data.name is string && request.resource.data.name.size() > 0 && request.resource.data.name.size() < 200
         && request.resource.data.email is string && request.resource.data.email.size() > 0 && request.resource.data.email.size() < 320
         && request.resource.data.message is string && request.resource.data.message.size() > 0 && request.resource.data.message.size() < 5000
