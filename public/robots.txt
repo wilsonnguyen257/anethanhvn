@@ -2,4 +2,4 @@ User-agent: *
 Disallow: /admin
 Disallow: /login
 
-Sitemap: https://wilsonnguyen257.github.io/sitemap.xml
+Sitemap: https://anethanhvn.com/sitemap.xml
