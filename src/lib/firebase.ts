@@ -1,5 +1,6 @@
 // Firebase client SDK initialization with safe fallback when not configured.
 import { initializeApp, type FirebaseApp } from 'firebase/app';
+import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
 import {
   getAuth,
   onAuthStateChanged as fbOnAuthStateChanged,
@@ -36,6 +37,15 @@ let storage: FirebaseStorage | null = null;
 
 if (isConfigured) {
   app = initializeApp(cfg as Record<string, string>);
+  // App Check proves requests come from this site, not a script hitting the
+  // Firestore API directly. Inactive until a reCAPTCHA v3 site key is provided.
+  const appCheckKey = import.meta.env.VITE_APPCHECK_SITE_KEY as string | undefined;
+  if (appCheckKey) {
+    initializeAppCheck(app, {
+      provider: new ReCaptchaV3Provider(appCheckKey),
+      isTokenAutoRefreshEnabled: true,
+    });
+  }
   auth = getAuth(app);
   // Initialize Firestore with settings to ignore undefined properties
   db = initializeFirestore(app, {

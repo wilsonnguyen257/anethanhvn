@@ -5,8 +5,14 @@ import SEO from '../components/SEO';
 import { CHURCH_INFO } from '../lib/constants';
 import { submitMessage } from '../lib/messages';
 
+const MIN_FILL_MS = 3000;
+const COOLDOWN_MS = 30_000;
+const LAST_SENT_KEY = 'contact:last-sent';
+
 export default function Contact() {
   const { t, language } = useLanguage();
+  const [honeypot, setHoneypot] = useState('');
+  const openedAt = useRef(Date.now());
   const [searchParams] = useSearchParams();
   const eventContext = searchParams.get('event');
 
@@ -42,6 +48,31 @@ export default function Contact() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+
+    // Bots fill every field, including the hidden one. Pretend success so they
+    // get no signal to adapt to; a person can't trip this.
+    if (honeypot !== '') {
+      setSent(true);
+      return;
+    }
+    // A submit within seconds of opening the page is almost never a person.
+    // Show an honest error (not a fake success) in case autofill was just fast.
+    if (Date.now() - openedAt.current < MIN_FILL_MS) {
+      setError(t('contact.send_error'));
+      return;
+    }
+
+    // Light client-side throttle against accidental or repeated submits.
+    try {
+      const last = Number(localStorage.getItem(LAST_SENT_KEY) || 0);
+      if (Date.now() - last < COOLDOWN_MS) {
+        setError(t('contact.send_error'));
+        return;
+      }
+    } catch {
+      /* storage unavailable; skip the throttle */
+    }
+
     setSubmitting(true);
     try {
       const topicLabel = topicOptions.find((o) => o.value === topic)?.label;
@@ -51,6 +82,11 @@ export default function Contact() {
         message,
         context: eventContext ? `Re: ${eventContext}` : topicLabel,
       });
+      try {
+        localStorage.setItem(LAST_SENT_KEY, String(Date.now()));
+      } catch {
+        /* ignore */
+      }
       setSent(true);
       setName('');
       setEmail('');
@@ -93,6 +129,19 @@ export default function Contact() {
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                  {/* Honeypot: invisible to people and assistive tech, tempting to bots */}
+                  <div aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
+                    <label htmlFor="contact-website">Website</label>
+                    <input
+                      id="contact-website"
+                      type="text"
+                      name="website"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      value={honeypot}
+                      onChange={(e) => setHoneypot(e.target.value)}
+                    />
+                  </div>
                   <div>
                     <label htmlFor="contact-name" className="block text-sm font-semibold text-slate-700 mb-1.5">{t('contact.name')}</label>
                     <input
