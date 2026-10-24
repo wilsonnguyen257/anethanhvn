@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useLanguage } from "../contexts/LanguageContext";
+import SEO from "../components/SEO";
 
 export default function NotFound() {
   const { language } = useLanguage();
@@ -13,6 +14,7 @@ export default function NotFound() {
 
   return (
     <div className="min-h-screen bg-surface flex items-center justify-center px-4 py-16">
+      <SEO title={language === 'vi' ? 'Không tìm thấy trang' : 'Page not found'} noindex />
       <div className="max-w-2xl mx-auto text-center">
         <div className="card !p-12">
           <p className="font-serif font-bold text-7xl md:text-8xl text-brand-600 mb-4">404</p>

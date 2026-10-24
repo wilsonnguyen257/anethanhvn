@@ -6,6 +6,7 @@ import { logAuditAction } from "../lib/audit";
 import SessionTimeoutWarning from "../components/SessionTimeoutWarning";
 import { Outlet, NavLink } from "react-router-dom";
 import logo from "../assets/logo.png";
+import SEO from "../components/SEO";
 
 // Per the wireframe (2j / 3b): a left sidebar on desktop, a bottom tab bar
 // on a phone — a volunteer posting an event from a phone needs the tabs
@@ -58,6 +59,7 @@ export default function AdminDashboard() {
 
   return (
     <div className="min-h-screen bg-surface">
+      <SEO title="Admin" noindex />
       {showTimeoutWarning && (
         <SessionTimeoutWarning onDismiss={() => setShowTimeoutWarning(false)} />
       )}

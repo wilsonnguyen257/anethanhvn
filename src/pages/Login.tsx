@@ -4,6 +4,7 @@ import { auth, signInWithEmailAndPassword, onAuthStateChanged, logout, IS_FIREBA
 import { logAuditAction } from '../lib/audit';
 import { useLanguage } from '../contexts/LanguageContext';
 import logo from '../assets/logo.png';
+import SEO from '../components/SEO';
 
 export default function Login() {
   const { t } = useLanguage();
@@ -162,6 +163,7 @@ export default function Login() {
 
   return (
     <div className="min-h-screen bg-surface flex items-center justify-center px-4">
+      <SEO title={t('admin.login')} noindex />
       <div className="mx-auto max-w-md w-full">
         <div className="flex flex-col items-center gap-2 mb-8 text-center">
           <img src={logo} alt="Logo" className="h-12 w-12 rounded-full object-cover" />
