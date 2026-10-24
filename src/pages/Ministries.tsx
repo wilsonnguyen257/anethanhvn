@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
+import SEO from '../components/SEO';
 import { subscribeJson } from '../lib/storage';
 import type { RosterMember } from './AdminMinistries';
 
@@ -74,6 +75,7 @@ export default function Ministries() {
 
   return (
     <div className="bg-surface">
+      <SEO title={t('ministries.title')} description={t('home.description')} />
       <section className="pt-16 pb-2 text-center">
         <div className="container-xl">
           <h1 className="h1 !text-4xl md:!text-5xl">{t('ministries.title')}</h1>

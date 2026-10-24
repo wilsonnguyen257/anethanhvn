@@ -20,7 +20,7 @@ export default function SEO({ title, description, noindex }: SEOProps) {
   const defaultDesc = language === 'vi' 
     ? 'Chào mừng đến với Cộng Đoàn Công Giáo Việt Nam Thánh Anê Lê Thị Thành.' 
     : 'Welcome to the Vietnamese Catholic Community St Ane Le Thi Thanh.';
-  const fullTitle = `${title} | ${siteName}`;
+  const fullTitle = title === siteName ? title : `${title} | ${siteName}`;
 
   return (
     <Helmet htmlAttributes={{ lang: language }}>
