@@ -7,6 +7,8 @@ import EventCountdown from '../components/EventCountdown';
 import { useLanguage } from '../contexts/LanguageContext';
 import { hasEventPassed, parseEventDate, parseEventTime, MELBOURNE_TIMEZONE } from '../lib/timezone';
 import { sanitizeRichHtml } from '../lib/sanitizeHtml';
+import { buildEventJsonLd, SITE_URL } from '../lib/seo';
+import { withLanguagePrefix } from '../lib/locale';
 import { getGoogleDriveEmbedUrl, getYouTubeEmbedUrl, validateOptionalExternalUrl } from '../lib/validation';
 
 // Builds a Google Calendar "quick add" link from an event's date/time/location.
@@ -137,6 +139,17 @@ export default function EventDetail() {
       <SEO
         title={eventName}
         description={eventName + ' - ' + formattedDate}
+        image={event.thumbnailFull || event.thumbnail}
+        jsonLd={buildEventJsonLd({
+          name: eventName,
+          description: eventContent.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 300) || `${eventName} - ${formattedDate}`,
+          date: event.date,
+          time: event.time,
+          location: event.location,
+          image: event.thumbnailFull || event.thumbnail,
+          url: `${SITE_URL}${withLanguagePrefix(`/events/${event.id}`, language)}`,
+          language,
+        })}
       />
 
       {/* Hero — centered, matching the site's symmetric public-page posture */}

@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 
-type Language = 'vi' | 'en';
+import { languageFromPath, stripLanguagePrefix, withLanguagePrefix, type Language } from '../lib/locale';
 
 interface LanguageContextType {
   language: Language;
@@ -949,16 +949,25 @@ interface LanguageProviderProps {
 }
 
 export function LanguageProvider({ children }: LanguageProviderProps) {
-  const [language, setLanguage] = useState<Language>(() => {
-    const saved = localStorage.getItem('language');
-    if (saved === 'vi' || saved === 'en') return saved;
-    return 'vi';
-  });
+  // The language is part of the URL (/en/... is English), so it can't change
+  // without a page load; the router's basename is fixed for the same reason.
+  const [language] = useState<Language>(() => languageFromPath(window.location.pathname));
 
   useEffect(() => {
-    localStorage.setItem('language', language);
     document.documentElement.lang = language;
   }, [language]);
+
+  const setLanguage = (lang: Language) => {
+    if (lang === language) return;
+    try {
+      // Remembered only so a returning visitor who picked English lands on /en.
+      localStorage.setItem('language', lang);
+    } catch {
+      /* storage unavailable */
+    }
+    const { pathname, search, hash } = window.location;
+    window.location.assign(withLanguagePrefix(stripLanguagePrefix(pathname), lang) + search + hash);
+  };
 
   const t = (key: string): string => {
     return translations[language][key as keyof typeof translations[typeof language]] || key;

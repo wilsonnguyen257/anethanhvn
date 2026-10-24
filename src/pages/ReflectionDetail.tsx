@@ -5,6 +5,8 @@ import { useLanguage } from "../contexts/LanguageContext";
 import { subscribeJson } from "../lib/storage";
 import ReflectionCover from "../components/ReflectionCover";
 import { sanitizeRichHtml } from "../lib/sanitizeHtml";
+import { buildArticleJsonLd, SITE_URL } from "../lib/seo";
+import { withLanguagePrefix } from "../lib/locale";
 import { getFacebookPluginUrl, getGoogleDriveEmbedUrl, getYouTubeEmbedUrl, validateOptionalExternalUrl } from "../lib/validation";
 
 type Reflection = {
@@ -106,6 +108,16 @@ export default function ReflectionDetail() {
       <SEO
         title={title}
         description={stripHtml(safeContent).slice(0, 160) + '...'}
+        image={reflection.thumbnailFull || reflection.thumbnail}
+        jsonLd={buildArticleJsonLd({
+          headline: title,
+          description: stripHtml(safeContent).slice(0, 160),
+          date: reflection.date,
+          author: reflection.author,
+          image: reflection.thumbnailFull || reflection.thumbnail,
+          url: `${SITE_URL}${withLanguagePrefix(`/reflections/${id}`, language)}`,
+          language,
+        })}
       />
       {/* Header — centered, measure-capped: nothing in the margins to pull
           the eye out of the text (see DESIGN.md § Layout). */}

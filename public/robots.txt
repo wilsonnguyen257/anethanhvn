@@ -1,5 +1,7 @@
 User-agent: *
 Disallow: /admin
 Disallow: /login
+Disallow: /en/admin
+Disallow: /en/login
 
 Sitemap: https://anethanhvn.com/sitemap.xml
