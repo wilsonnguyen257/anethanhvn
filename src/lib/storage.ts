@@ -273,11 +273,14 @@ export function subscribeJson<T = unknown>(
   onError?: (err: unknown) => void,
 ): () => void {
   let active = true;
+  // Bumped by every load and every live snapshot so a slow load can't overwrite newer data.
+  let seq = 0;
 
   const load = async () => {
+    const mySeq = ++seq;
     try {
       const data = await getJson<T>(name);
-      if (active) callback(data);
+      if (active && mySeq === seq) callback(data);
     } catch (err) {
       console.error('subscribeJson load error:', err);
       onError?.(err);
@@ -301,12 +304,14 @@ export function subscribeJson<T = unknown>(
         const items = snap.docs.map((d) => d.data()) as unknown as T;
         if (!snap.empty) {
           storageMode = 'collection';
+          seq++;
           callback(items);
           return;
         }
 
         // Only emit an empty list when we already know this dataset uses collection storage.
         if (storageMode === 'collection') {
+          seq++;
           callback(items);
         }
       }, (err) => {
@@ -321,6 +326,7 @@ export function subscribeJson<T = unknown>(
         const data = snap.data() as { value?: T; type?: string } | undefined;
         if (data?.value !== undefined) {
           storageMode = 'document';
+          seq++;
           callback(data.value);
           return;
         }
@@ -359,8 +365,10 @@ export function subscribeJson<T = unknown>(
     // ignore if unsupported
   }
 
-  // Periodic refresh (every 30s) so other users see updates soon after save
-  const interval = window.setInterval(() => void load(), 30_000);
+  // Periodic refresh (every 30s) only when there are no live Firestore listeners
+  const interval = IS_FIREBASE_CONFIGURED && db
+    ? undefined
+    : window.setInterval(() => void load(), 30_000);
 
   return () => {
     active = false;
@@ -368,7 +376,7 @@ export function subscribeJson<T = unknown>(
     if (bc) {
       try { bc.close(); } catch { /* ignore close errors */ void 0; }
     }
-    window.clearInterval(interval);
+    if (interval !== undefined) window.clearInterval(interval);
     if (unsubscribeFirestoreDoc) {
       try { unsubscribeFirestoreDoc(); } catch { /* ignore */ }
     }

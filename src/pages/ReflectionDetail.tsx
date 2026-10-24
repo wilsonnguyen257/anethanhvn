@@ -47,7 +47,8 @@ export default function ReflectionDetail() {
         const index = published.findIndex((r) => r.id === id);
         const found = index !== -1 ? published[index] : undefined;
         if (!found) {
-          navigate("/reflections");
+          // An empty list usually means data is still loading; only redirect once we know the id is missing.
+          if (published.length > 0) navigate("/reflections");
           return;
         }
         const mapped: Reflection = {

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 import { extendSession, getTimeRemaining } from '../lib/sessionTimeout';
 
@@ -8,21 +8,26 @@ interface SessionTimeoutWarningProps {
 
 export default function SessionTimeoutWarning({ onDismiss }: SessionTimeoutWarningProps) {
   const { language } = useLanguage();
-  const [timeLeft, setTimeLeft] = useState(getTimeRemaining());
+  const [timeLeft, setTimeLeft] = useState(getTimeRemaining);
+  // Parents pass an inline arrow; a ref keeps the 1s interval from restarting every render
+  const onDismissRef = useRef(onDismiss);
+  useEffect(() => {
+    onDismissRef.current = onDismiss;
+  });
 
   useEffect(() => {
     const interval = setInterval(() => {
       const remaining = getTimeRemaining();
       setTimeLeft(remaining);
-      
+
       // Auto-dismiss if time runs out
       if (remaining <= 0) {
-        onDismiss();
+        onDismissRef.current();
       }
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [onDismiss]);
+  }, []);
 
   const formatTime = (ms: number) => {
     const minutes = Math.floor(ms / 60000);

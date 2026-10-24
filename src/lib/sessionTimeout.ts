@@ -54,7 +54,8 @@ async function handleTimeout(): Promise<void> {
   if (onTimeoutCallback) {
     onTimeoutCallback();
   }
-  
+  stopSessionTimeout();
+
   try {
     await logout();
   } catch (error) {
@@ -67,6 +68,8 @@ async function handleTimeout(): Promise<void> {
  * Called on user interaction events
  */
 function trackActivity(): void {
+  // mousemove/scroll fire at event rate; resetting at most once a second is plenty
+  if (Date.now() - lastActivity < 1000) return;
   resetTimer();
 }
 
@@ -88,6 +91,9 @@ export function startSessionTimeout(options?: {
   onWarning?: () => void;
   onTimeout?: () => void;
 }): void {
+  // Make start idempotent so repeated calls don't stack timers or listeners
+  stopSessionTimeout();
+
   if (options?.onWarning) {
     onWarningCallback = options.onWarning;
   }

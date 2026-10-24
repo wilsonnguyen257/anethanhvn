@@ -16,22 +16,18 @@ export default function VisualEditor({
   required = false
 }: VisualEditorProps) {
   const editorRef = useRef<HTMLDivElement>(null);
-  const isUpdatingRef = useRef(false);
 
-  // Update editor content when value changes externally
+  // Update editor content when value changes externally. Skipping the write
+  // when the DOM already matches keeps the caret from jumping while typing.
   useEffect(() => {
-    if (editorRef.current && !isUpdatingRef.current) {
+    if (editorRef.current && editorRef.current.innerHTML !== value) {
       editorRef.current.innerHTML = value;
     }
   }, [value]);
 
   const handleInput = useCallback(() => {
     if (editorRef.current) {
-      isUpdatingRef.current = true;
       onChange(editorRef.current.innerHTML);
-      setTimeout(() => {
-        isUpdatingRef.current = false;
-      }, 0);
     }
   }, [onChange]);
 
