@@ -122,12 +122,16 @@ export default function Events() {
               <p className="eyebrow">{t('nav.events')}</p>
               <div className="ml-auto flex gap-2">
                 <button
+                  type="button"
+                  aria-pressed={eventTab === 'upcoming'}
                   onClick={() => setEventTab('upcoming')}
                   className={`btn !py-2 !px-4 text-sm ${eventTab === 'upcoming' ? 'btn-primary' : 'btn-outline'}`}
                 >
                   {t('events.upcoming')}
                 </button>
                 <button
+                  type="button"
+                  aria-pressed={eventTab === 'past'}
                   onClick={() => setEventTab('past')}
                   className={`btn !py-2 !px-4 text-sm ${eventTab === 'past' ? 'btn-primary' : 'btn-outline'}`}
                 >

@@ -5,6 +5,8 @@ interface VisualEditorProps {
   onChange: (value: string) => void;
   placeholder?: string;
   label?: string;
+  /** id of an element that labels the editor, when the label lives outside it. */
+  labelledBy?: string;
   required?: boolean;
 }
 
@@ -13,6 +15,7 @@ export default function VisualEditor({
   onChange,
   placeholder,
   label,
+  labelledBy,
   required = false
 }: VisualEditorProps) {
   const editorRef = useRef<HTMLDivElement>(null);
@@ -208,7 +211,7 @@ export default function VisualEditor({
       )}
       
       {/* Toolbar */}
-      <div className="bg-slate-100 border border-slate-200 rounded-t-xl p-2 flex flex-wrap gap-1">
+      <div role="toolbar" aria-label="Text formatting" className="bg-slate-100 border border-slate-200 rounded-t-xl p-2 flex flex-wrap gap-1">
         {/* Format buttons */}
         <div className="flex gap-1 border-r border-slate-200 pr-2">
           {formatButtons.map((btn) => (
@@ -217,6 +220,7 @@ export default function VisualEditor({
               type="button"
               onClick={() => execCommand(btn.command)}
               title={btn.title}
+              aria-label={btn.title}
               className="px-3 py-1.5 text-sm font-semibold bg-surface hover:bg-slate-200 border border-slate-200 rounded-lg transition-colors"
             >
               {btn.icon}
@@ -232,6 +236,7 @@ export default function VisualEditor({
               type="button"
               onClick={() => execCommand(btn.command, btn.value)}
               title={btn.title}
+              aria-label={btn.title}
               className="px-3 py-1.5 text-sm font-semibold bg-surface hover:bg-slate-200 border border-slate-200 rounded-lg transition-colors"
             >
               {btn.label}
@@ -247,6 +252,7 @@ export default function VisualEditor({
               type="button"
               onClick={() => execCommand(btn.command)}
               title={btn.title}
+              aria-label={btn.title}
               className="px-3 py-1.5 text-xs bg-surface hover:bg-slate-200 border border-slate-200 rounded-lg transition-colors"
             >
               {btn.icon}
@@ -262,6 +268,7 @@ export default function VisualEditor({
               type="button"
               onClick={() => execCommand(btn.command)}
               title={btn.title}
+              aria-label={btn.title}
               className={`px-3 py-1.5 text-sm bg-surface hover:bg-slate-200 border border-slate-200 rounded-lg transition-colors ${btn.style || ''}`}
             >
               {btn.icon}
@@ -274,6 +281,7 @@ export default function VisualEditor({
           type="button"
           onClick={insertLink}
           title="Insert Link"
+          aria-label="Insert Link"
           className="px-3 py-1.5 text-sm bg-surface hover:bg-slate-200 border border-slate-200 rounded-lg transition-colors"
         >
           🔗
@@ -284,6 +292,7 @@ export default function VisualEditor({
           type="button"
           onClick={() => execCommand('removeFormat')}
           title="Clear Formatting"
+          aria-label="Clear Formatting"
           className="px-3 py-1.5 text-sm bg-surface hover:bg-slate-200 border border-slate-200 rounded-lg transition-colors"
         >
           ✕
@@ -294,6 +303,11 @@ export default function VisualEditor({
       <div
         ref={editorRef}
         contentEditable
+        role="textbox"
+        aria-multiline="true"
+        aria-labelledby={labelledBy}
+        aria-label={labelledBy ? undefined : label}
+        aria-required={required || undefined}
         onInput={handleInput}
         onPaste={handlePaste}
         className="w-full min-h-[200px] p-4 border border-slate-200 rounded-b-xl bg-surface text-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-600 overflow-auto"

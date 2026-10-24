@@ -385,10 +385,10 @@ export default function AdminReflections() {
 
           <div className="grid md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label htmlFor="reflection-field-1" className="block text-sm font-medium text-slate-700 mb-2">
                 {language === 'vi' ? 'Ngày' : 'Date'}
               </label>
-              <input
+              <input id="reflection-field-1"
                 type="date"
                 value={formData.date}
                 onChange={e => setFormData({ ...formData, date: e.target.value })}
@@ -396,10 +396,10 @@ export default function AdminReflections() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label htmlFor="reflection-field-2" className="block text-sm font-medium text-slate-700 mb-2">
                 {language === 'vi' ? 'Tác giả' : 'Author'} <span className="text-red-500">*</span>
               </label>
-              <input
+              <input id="reflection-field-2"
                 placeholder={language === 'vi' ? 'Nhập tên tác giả...' : 'Enter author name...'}
                 value={formData.author}
                 onChange={e => setFormData({ ...formData, author: e.target.value })}
@@ -485,10 +485,10 @@ export default function AdminReflections() {
 
           <div className="grid md:grid-cols-3 gap-6">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label htmlFor="reflection-field-5" className="block text-sm font-medium text-slate-700 mb-2">
                 Facebook Link
               </label>
-              <input
+              <input id="reflection-field-5"
                 placeholder="https://facebook.com/..."
                 value={formData.facebookLink}
                 onChange={e => setFormData({ ...formData, facebookLink: e.target.value })}
@@ -496,10 +496,10 @@ export default function AdminReflections() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label htmlFor="reflection-field-3" className="block text-sm font-medium text-slate-700 mb-2">
                 YouTube Link
               </label>
-              <input
+              <input id="reflection-field-3"
                 placeholder="https://youtube.com/..."
                 value={formData.youtubeLink}
                 onChange={e => setFormData({ ...formData, youtubeLink: e.target.value })}
@@ -507,10 +507,10 @@ export default function AdminReflections() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label htmlFor="reflection-field-4" className="block text-sm font-medium text-slate-700 mb-2">
                 Google Drive Link
               </label>
-              <input
+              <input id="reflection-field-4"
                 placeholder="https://drive.google.com/..."
                 value={formData.driveLink}
                 onChange={e => setFormData({ ...formData, driveLink: e.target.value })}
@@ -584,7 +584,7 @@ export default function AdminReflections() {
           <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
               {/* Search */}
               <div className="relative w-full sm:w-auto">
-                <input
+                <input aria-label={language === 'vi' ? 'Tìm kiếm' : 'Search'}
                     placeholder={language === 'vi' ? 'Tìm kiếm...' : 'Search...'}
                     value={searchTerm}
                     onChange={e => { setSearchTerm(e.target.value); setCurrentPage(1); }}
@@ -596,7 +596,7 @@ export default function AdminReflections() {
               </div>
 
               {/* Sort */}
-              <select
+              <select aria-label={language === 'vi' ? 'Sắp xếp' : 'Sort'}
                   value={`${sortConfig.key}-${sortConfig.direction}`}
                   onChange={e => {
                       const [key, direction] = e.target.value.split('-');

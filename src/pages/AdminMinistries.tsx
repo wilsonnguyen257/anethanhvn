@@ -116,9 +116,9 @@ export default function AdminMinistries() {
                 )}
               </button>
               <div className="w-20 flex justify-end gap-1 text-xs">
-                <button onClick={() => void move(index, -1)} disabled={index === 0} className="px-1.5 py-1 rounded text-slate-600 hover:text-slate-900 disabled:opacity-30">▲</button>
-                <button onClick={() => void move(index, 1)} disabled={index === roster.length - 1} className="px-1.5 py-1 rounded text-slate-600 hover:text-slate-900 disabled:opacity-30">▼</button>
-                <button onClick={() => void handleDelete(member.id)} className="px-1.5 py-1 rounded text-slate-600 hover:text-red-600">✕</button>
+                <button onClick={() => void move(index, -1)} disabled={index === 0} className="px-1.5 py-1 rounded text-slate-600 hover:text-slate-900 disabled:opacity-30" aria-label={t('admin.move_up')}>▲</button>
+                <button onClick={() => void move(index, 1)} disabled={index === roster.length - 1} className="px-1.5 py-1 rounded text-slate-600 hover:text-slate-900 disabled:opacity-30" aria-label={t('admin.move_down')}>▼</button>
+                <button onClick={() => void handleDelete(member.id)} className="px-1.5 py-1 rounded text-slate-600 hover:text-red-600" aria-label={t('admin.delete')}>✕</button>
               </div>
             </div>
           ))
@@ -129,8 +129,8 @@ export default function AdminMinistries() {
         <p className="eyebrow mb-4">{t('admin.add_person')}</p>
         <form onSubmit={handleAdd} className="flex flex-col sm:flex-row gap-3 items-end">
           <div className="flex-1 w-full">
-            <label className="block text-xs font-semibold text-slate-600 mb-1">{t('admin.full_name')}</label>
-            <input
+            <label htmlFor="ministry-field-1" className="block text-xs font-semibold text-slate-600 mb-1">{t('admin.full_name')}</label>
+            <input id="ministry-field-1"
               type="text"
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -139,8 +139,8 @@ export default function AdminMinistries() {
             />
           </div>
           <div className="flex-1 w-full">
-            <label className="block text-xs font-semibold text-slate-600 mb-1">{t('admin.role')}</label>
-            <input
+            <label htmlFor="ministry-field-2" className="block text-xs font-semibold text-slate-600 mb-1">{t('admin.role')}</label>
+            <input id="ministry-field-2"
               type="text"
               value={formData.role}
               onChange={(e) => setFormData({ ...formData, role: e.target.value })}
@@ -149,8 +149,8 @@ export default function AdminMinistries() {
             />
           </div>
           <div className="flex-1 w-full">
-            <label className="block text-xs font-semibold text-slate-600 mb-1">{t('admin.photo_url')}</label>
-            <input
+            <label htmlFor="ministry-field-3" className="block text-xs font-semibold text-slate-600 mb-1">{t('admin.photo_url')}</label>
+            <input id="ministry-field-3"
               type="url"
               value={formData.photoUrl}
               onChange={(e) => setFormData({ ...formData, photoUrl: e.target.value })}

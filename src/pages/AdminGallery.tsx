@@ -267,7 +267,7 @@ export default function AdminGallery() {
           <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
               {/* Search */}
               <div className="relative">
-                <input
+                <input aria-label={t('admin.gallery.search') || 'Search images...'}
                     placeholder={t('admin.gallery.search') || 'Search images...'}
                     value={searchTerm}
                     onChange={e => { setSearchTerm(e.target.value); setCurrentPage(1); }}
@@ -299,10 +299,10 @@ export default function AdminGallery() {
         </p>
 
         <div className="mb-6 max-w-xs">
-          <label className="block text-xs font-semibold uppercase tracking-wide text-slate-600 mb-2">
+          <label htmlFor="gallery-field-1" className="block text-xs font-semibold uppercase tracking-wide text-slate-600 mb-2">
             {t('admin.gallery.category')}
           </label>
-          <select
+          <select id="gallery-field-1"
             value={uploadCategory}
             onChange={(e) => setUploadCategory(e.target.value as GalleryCategory | '')}
             className="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-surface text-slate-900 focus:ring-2 focus:ring-brand-600 focus:border-transparent cursor-pointer"
@@ -429,7 +429,7 @@ export default function AdminGallery() {
                 <div className="p-4">
                   {editingId === img.id ? (
                     <div className="space-y-3">
-                      <input
+                      <input aria-label={t('admin.gallery.name')}
                         type="text"
                         value={editName}
                         onChange={(e) => setEditName(e.target.value)}
@@ -437,13 +437,13 @@ export default function AdminGallery() {
                         placeholder={t('admin.gallery.name')}
                         autoFocus
                       />
-                      <input
+                      <input aria-label={t('admin.gallery.date')}
                         type="date"
                         value={editDate}
                         onChange={(e) => setEditDate(e.target.value)}
                         className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-surface text-sm focus:ring-2 focus:ring-brand-600 focus:border-transparent"
                       />
-                      <select
+                      <select aria-label={t('admin.gallery.category')}
                         value={editCategory}
                         onChange={(e) => setEditCategory(e.target.value as GalleryCategory | '')}
                         className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-surface text-sm focus:ring-2 focus:ring-brand-600 focus:border-transparent cursor-pointer"

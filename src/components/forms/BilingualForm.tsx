@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useId } from 'react';
 import { useLanguage } from '../../contexts/LanguageContext';
 import type { Translation } from '../../types/content';
 import VisualEditor from '../VisualEditor';
@@ -27,6 +27,7 @@ export default function BilingualForm({
   required = false
 }: BilingualFormProps) {
   const { language } = useLanguage();
+  const fieldId = useId();
   const [activeTab, setActiveTab] = useState<'vi' | 'en'>('vi');
   const [isTranslating, setIsTranslating] = useState(false);
 
@@ -94,6 +95,7 @@ export default function BilingualForm({
       <div className="flex gap-1 p-1 bg-slate-100 rounded-xl">
         <button
           type="button"
+          aria-pressed={activeTab === 'vi'}
           onClick={() => setActiveTab('vi')}
           className={`flex-1 px-4 py-2 rounded-xl font-medium transition-colors ${
             activeTab === 'vi'
@@ -105,6 +107,7 @@ export default function BilingualForm({
         </button>
         <button
           type="button"
+          aria-pressed={activeTab === 'en'}
           onClick={() => setActiveTab('en')}
           className={`flex-1 px-4 py-2 rounded-xl font-medium transition-colors ${
             activeTab === 'en'
@@ -119,8 +122,8 @@ export default function BilingualForm({
       {/* Form Fields */}
       <div className="space-y-2">
         <div className="flex items-center justify-between">
-          <label className="text-sm font-medium text-slate-700">
-            {activeTab === 'vi' ? 'Nội dung tiếng Việt' : 'English Content'}
+          <label id={`${fieldId}-label`} htmlFor={fieldId} className="text-sm font-medium text-slate-700">
+            {title}: {activeTab === 'vi' ? 'Nội dung tiếng Việt' : 'English Content'}
           </label>
           <button
             type="button"
@@ -133,11 +136,13 @@ export default function BilingualForm({
         
         {type === 'editor' ? (
           <VisualEditor
+            labelledBy={`${fieldId}-label`}
             value={value[activeTab] || ''}
             onChange={(newContent) => handleTextChange(activeTab, newContent)}
           />
         ) : type === 'textarea' ? (
           <textarea
+            id={fieldId}
             value={value[activeTab] || ''}
             onChange={(e) => handleTextChange(activeTab, e.target.value)}
             placeholder={placeholder[activeTab]}
@@ -146,6 +151,7 @@ export default function BilingualForm({
           />
         ) : (
           <input
+            id={fieldId}
             type="text"
             value={value[activeTab] || ''}
             onChange={(e) => handleTextChange(activeTab, e.target.value)}

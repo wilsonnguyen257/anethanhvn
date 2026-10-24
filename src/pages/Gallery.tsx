@@ -94,6 +94,8 @@ export default function Gallery() {
             {filters.map((f) => (
               <button
                 key={f.value}
+                type="button"
+                aria-pressed={categoryFilter === f.value}
                 onClick={() => setCategoryFilter(f.value)}
                 className={`btn !py-2 !px-4 text-sm ${categoryFilter === f.value ? 'btn-primary' : 'btn-outline'}`}
               >
