@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 
 const SITE_URL = 'https://anethanhvn.com';
-const SHARE_IMAGE = `${SITE_URL}/logo.png`;
+const SHARE_IMAGE = `${SITE_URL}/og-image.jpg`;
 
 interface SEOProps {
   title: string;
@@ -30,7 +30,7 @@ export default function SEO({ title, description, noindex }: SEOProps) {
       <meta property="og:site_name" content={siteName} />
       <meta property="og:locale" content={language === 'vi' ? 'vi_VN' : 'en_AU'} />
       <meta property="og:image" content={SHARE_IMAGE} />
-      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:card" content="summary_large_image" />
       <meta name="description" content={description || defaultDesc} />
       <meta property="og:title" content={fullTitle} />
       <meta property="og:description" content={description || defaultDesc} />

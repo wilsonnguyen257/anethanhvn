@@ -21,7 +21,7 @@ const root = path.join(__dirname, '..');
 const dist = path.join(root, 'dist');
 
 const SITE_URL = 'https://anethanhvn.com';
-const SHARE_IMAGE = `${SITE_URL}/logo.png`;
+const SHARE_IMAGE = `${SITE_URL}/og-image.jpg`;
 const SITE_NAME = 'Cộng Đoàn Công Giáo Việt Nam Thánh Anê Lê Thị Thành';
 
 // --- Vietnamese copy, read from the app's own translation table -------------
@@ -170,7 +170,7 @@ function render(route) {
     `<meta property="og:site_name" content="${esc(SITE_NAME)}" data-rh="true" />`,
     `<meta property="og:locale" content="vi_VN" data-rh="true" />`,
     `<meta property="og:image" content="${esc(image)}" data-rh="true" />`,
-    `<meta name="twitter:card" content="${route.image ? 'summary_large_image' : 'summary'}" data-rh="true" />`,
+    `<meta name="twitter:card" content="summary_large_image" data-rh="true" />`,
   ].join('\n    ');
 
   return template
