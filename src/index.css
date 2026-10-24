@@ -30,24 +30,15 @@ h1 {
   @apply font-serif;
 }
 
-/* Input placeholders */
+/* Input placeholders — slate-600 clears the 4.5:1 text-contrast minimum
+   (slate-500 is only ~3.6:1 on the page background). */
 ::placeholder {
-  @apply text-slate-500;
+  @apply text-slate-600;
 }
 
 /* For Firefox */
 ::-moz-placeholder {
-  @apply text-slate-500;
-}
-
-/* For Internet Explorer 10-11 */
-:-ms-input-placeholder {
-  @apply text-slate-400;
-}
-
-/* For Microsoft Edge */
-::-ms-input-placeholder {
-  @apply text-slate-400;
+  @apply text-slate-600;
 }
 
 /* Input fields */

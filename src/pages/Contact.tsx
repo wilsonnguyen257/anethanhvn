@@ -80,7 +80,8 @@ export default function Contact() {
         name,
         email,
         message,
-        context: eventContext ? `Re: ${eventContext}` : topicLabel,
+        // firestore.rules caps context at 500 characters
+        context: (eventContext ? `Re: ${eventContext}` : topicLabel)?.slice(0, 450),
       });
       try {
         localStorage.setItem(LAST_SENT_KEY, String(Date.now()));

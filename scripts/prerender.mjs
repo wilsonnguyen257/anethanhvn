@@ -184,7 +184,9 @@ async function loadDynamicRoutes() {
     return [];
   }
   const routes = [];
-  const published = (it) => it && it.id && (it.status || 'published') === 'published';
+  // Ids become directory names, so only accept ones that can't be '..' or contain separators.
+  const SAFE_ID = /^[A-Za-z0-9_-]{1,100}$/;
+  const published = (it) => it && SAFE_ID.test(String(it.id)) && (it.status || 'published') === 'published';
   const image = (it) => {
     const u = it.thumbnailFull || it.thumbnail;
     return typeof u === 'string' && u.startsWith('https://') ? u : undefined;
@@ -278,8 +280,12 @@ function render(route, lang) {
 }
 
 function write(route, lang) {
-  const segments = route.path.split('/').filter(Boolean).map(decodeURIComponent);
-  const dir = path.join(dist, ...(lang === 'en' ? ['en'] : []), ...segments);
+  const segments = route.path.split('/').filter(Boolean);
+  const dir = path.resolve(dist, ...(lang === 'en' ? ['en'] : []), ...segments);
+  // Belt and braces: never write outside dist/, whatever the route path contains.
+  if (dir !== dist && !dir.startsWith(dist + path.sep)) {
+    throw new Error(`prerender: refusing to write outside dist: ${route.path}`);
+  }
   fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(path.join(dir, 'index.html'), render(route, lang));
 }

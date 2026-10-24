@@ -45,7 +45,7 @@ export default function About() {
 
             <blockquote className="mt-14 border-l-2 border-brand-600 pl-6">
               <p className="font-serif text-lg md:text-xl text-slate-800 leading-relaxed">{t('about.history_closing')}</p>
-              <footer className="mt-4 text-sm text-slate-500">
+              <footer className="mt-4 text-sm text-slate-600">
                 {t('about.history_source')}{' '}
                 <a
                   href="/documents/So-Luoc-Lich-Su-CD-Ane-Thanh-Oct-2026.docx"

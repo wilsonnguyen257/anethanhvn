@@ -79,7 +79,7 @@ export default function AdminDashboard() {
           <div className="flex-1" />
           {user && (
             <div className="px-2 py-3 border-t border-slate-200">
-              <p className="text-xs text-slate-400">{language === 'vi' ? 'Đăng nhập với' : 'Signed in as'}</p>
+              <p className="text-xs text-slate-600">{language === 'vi' ? 'Đăng nhập với' : 'Signed in as'}</p>
               <p className="text-sm font-semibold text-slate-900 truncate">{user.email}</p>
               <button
                 onClick={() => void logout()}

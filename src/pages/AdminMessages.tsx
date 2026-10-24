@@ -33,10 +33,10 @@ export default function AdminMessages() {
         {/* List — flex: 1 1 300px */}
         <div className="md:flex-[1_1_300px] md:shrink-0 md:border-r border-slate-200">
           <div className="flex gap-4 px-4 py-3 border-b border-slate-200 text-sm font-semibold">
-            <button onClick={() => setTab('pending')} className={tab === 'pending' ? 'text-brand-600' : 'text-slate-400'}>
+            <button onClick={() => setTab('pending')} className={tab === 'pending' ? 'text-brand-600' : 'text-slate-600'}>
               {t('admin.messages_pending')} ({messages.filter((m) => m.status === 'pending').length})
             </button>
-            <button onClick={() => setTab('answered')} className={tab === 'answered' ? 'text-brand-600' : 'text-slate-400'}>
+            <button onClick={() => setTab('answered')} className={tab === 'answered' ? 'text-brand-600' : 'text-slate-600'}>
               {t('admin.messages_answered')}
             </button>
           </div>

@@ -12,7 +12,12 @@ export default function SessionTimeoutWarning({ onDismiss }: SessionTimeoutWarni
   const [timeLeft, setTimeLeft] = useState(getTimeRemaining);
   // Parents pass an inline arrow; a ref keeps the 1s interval from restarting every render
   const dialogRef = useRef<HTMLDivElement>(null);
-  useDialog(dialogRef, true, onDismiss);
+  // Escape must do what "Stay logged in" does, or a keyboard user would lose
+  // the dialog but not the countdown and be logged out without further warning.
+  useDialog(dialogRef, true, () => {
+    extendSession();
+    onDismiss();
+  });
   const onDismissRef = useRef(onDismiss);
   useEffect(() => {
     onDismissRef.current = onDismiss;

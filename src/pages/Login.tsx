@@ -123,7 +123,7 @@ export default function Login() {
 
   if (checkingAuth) {
     return (
-      <div className="min-h-screen bg-surface flex items-center justify-center text-slate-400 text-sm">
+      <div className="min-h-screen bg-surface flex items-center justify-center text-slate-600 text-sm">
         Checking authentication...
       </div>
     );
@@ -219,7 +219,7 @@ export default function Login() {
             </button>
           </form>
 
-          <div className="mt-6 text-center text-sm text-slate-400">
+          <div className="mt-6 text-center text-sm text-slate-600">
             <p>{t('admin.authorized_only')}</p>
           </div>
         </div>

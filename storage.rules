@@ -10,7 +10,7 @@ service firebase.storage {
     // Uploads must be reasonably sized images (client checks are bypassable)
     function isValidImage() {
       return request.resource.size < 10 * 1024 * 1024
-        && request.resource.contentType.matches('image/.*');
+        && request.resource.contentType.matches('image/(jpeg|png|webp|gif|avif)');
     }
 
     // Publicly readable gallery files

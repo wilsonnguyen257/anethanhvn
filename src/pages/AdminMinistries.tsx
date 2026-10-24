@@ -112,13 +112,13 @@ export default function AdminMinistries() {
                 {member.visible ? (
                   <span className="text-xs font-semibold text-green-600">✓ {t('admin.visible')}</span>
                 ) : (
-                  <span className="text-xs font-semibold text-slate-400">◦ {t('admin.hidden')}</span>
+                  <span className="text-xs font-semibold text-slate-600">◦ {t('admin.hidden')}</span>
                 )}
               </button>
               <div className="w-20 flex justify-end gap-1 text-xs">
-                <button onClick={() => void move(index, -1)} disabled={index === 0} className="px-1.5 py-1 rounded text-slate-400 hover:text-slate-900 disabled:opacity-30">▲</button>
-                <button onClick={() => void move(index, 1)} disabled={index === roster.length - 1} className="px-1.5 py-1 rounded text-slate-400 hover:text-slate-900 disabled:opacity-30">▼</button>
-                <button onClick={() => void handleDelete(member.id)} className="px-1.5 py-1 rounded text-slate-400 hover:text-red-600">✕</button>
+                <button onClick={() => void move(index, -1)} disabled={index === 0} className="px-1.5 py-1 rounded text-slate-600 hover:text-slate-900 disabled:opacity-30">▲</button>
+                <button onClick={() => void move(index, 1)} disabled={index === roster.length - 1} className="px-1.5 py-1 rounded text-slate-600 hover:text-slate-900 disabled:opacity-30">▼</button>
+                <button onClick={() => void handleDelete(member.id)} className="px-1.5 py-1 rounded text-slate-600 hover:text-red-600">✕</button>
               </div>
             </div>
           ))

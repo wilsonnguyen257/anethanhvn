@@ -304,7 +304,7 @@ export default function VisualEditor({
       <style>{`
         [contentEditable]:empty:before {
           content: attr(data-placeholder);
-          color: #9ca3af;
+          color: #61656C;
           pointer-events: none;
           position: absolute;
         }

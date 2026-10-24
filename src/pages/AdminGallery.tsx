@@ -329,7 +329,7 @@ export default function AdminGallery() {
                 <p className="mb-2 text-sm text-slate-600">
                   <span className="font-semibold">{file ? file.name : t('admin.gallery.choose_file')}</span>
                 </p>
-                {!file && <p className="text-xs text-slate-400">PNG, JPG, GIF up to 10MB — automatically optimized to WebP</p>}
+                {!file && <p className="text-xs text-slate-600">PNG, JPG, GIF up to 10MB — automatically optimized to WebP</p>}
               </div>
               <input
                 id="file-upload"

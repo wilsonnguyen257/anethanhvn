@@ -169,7 +169,7 @@ export default function EventDetail() {
                 {t('events.upcoming')}
               </span>
             ) : (
-              <span className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-slate-400">
+              <span className="inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-slate-600">
                 <span className="w-1.5 h-1.5 rounded-full bg-slate-300"></span>
                 {t('events.past')}
               </span>
