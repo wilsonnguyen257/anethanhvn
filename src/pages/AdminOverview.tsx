@@ -94,7 +94,7 @@ export default function AdminOverview() {
             ) : (
               pendingMessages.slice(0, 4).map((m) => (
                 <Link key={m.id} to="/admin/messages" className="flex items-start gap-3 group">
-                  <span className="w-8 h-8 rounded-full bg-surface border border-slate-200 flex items-center justify-center text-[10px] font-semibold text-slate-600 shrink-0">
+                  <span className="w-8 h-8 rounded-full bg-surface border border-slate-200 flex items-center justify-center text-xs font-semibold text-slate-600 shrink-0">
                     {m.name.slice(0, 2).toUpperCase()}
                   </span>
                   <div className="min-w-0">

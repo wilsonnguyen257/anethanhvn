@@ -231,9 +231,8 @@ button.card:hover {
    blue (DESIGN.md § Shapes), unless it draws its own ring. */
 a:focus-visible,
 button:focus-visible {
-  outline: 2px solid #0D324D;
+  outline: 2px solid theme('colors.brand.600');
   outline-offset: 2px;
-  border-radius: 4px;
 }
 
 /* Respect the OS "reduce motion" setting. */

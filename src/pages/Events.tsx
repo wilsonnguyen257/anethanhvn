@@ -158,6 +158,8 @@ export default function Events() {
                           src={event.thumbnail || event.thumbnailPath}
                           alt={event.name[language] || event.name.vi}
                           className="w-full h-full object-cover"
+                          loading="lazy"
+                          decoding="async"
                         />
                       </div>
                     )}

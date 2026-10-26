@@ -479,7 +479,7 @@ export default function AdminGallery() {
                         </svg>
                         <span>{new Date(img.created).toLocaleDateString()}</span>
                         {img.category && (
-                          <span className="ml-auto rounded-full bg-slate-200 text-slate-700 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide">
+                          <span className="ml-auto rounded-full bg-slate-200 text-slate-700 px-2 py-0.5 text-xs font-semibold uppercase tracking-wide">
                             {categoryOptions.find((o) => o.value === img.category)?.label}
                           </span>
                         )}

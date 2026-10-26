@@ -49,7 +49,7 @@ export default function AdminMessages() {
                 onClick={() => setSelectedId(m.id)}
                 className={`w-full text-left flex items-start gap-3 px-4 py-3 border-b border-slate-200 transition-colors ${selected?.id === m.id ? 'bg-surface' : 'hover:bg-surface/60'}`}
               >
-                <span className="w-8 h-8 rounded-full bg-surface border border-slate-200 flex items-center justify-center text-[10px] font-semibold text-slate-600 shrink-0">
+                <span className="w-8 h-8 rounded-full bg-surface border border-slate-200 flex items-center justify-center text-xs font-semibold text-slate-600 shrink-0">
                   {m.name.slice(0, 2).toUpperCase()}
                 </span>
                 <div className="min-w-0">
